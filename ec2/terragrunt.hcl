@@ -1,5 +1,5 @@
 terraform {
-  source = "../../modules/ec2///"
+  source = "/modules/ec2///"
 }
 
 inputs = {

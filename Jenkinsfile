@@ -1,14 +1,19 @@
 pipeline {
     agent any
 
-    environment {
-        TF_HOME = tool 'Terraform'
-    }
-
     parameters {
         choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Terraform Action')
     }
-
+    
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Pull the git repo
+                cleanWs()
+                checkout scm
+            }
+        }
+        
     stages {
         stage('Checkout') {
             steps {

@@ -47,5 +47,21 @@ pipeline {
                 }
             }
         }
+        stage('Terraform Init EC2') {
+            steps {
+                script {
+                    sh "cd ec2 && terraform init"
+                }
+            }
+        }
+
+        stage('Terraform Apply/Destroy EC2') {
+            steps {
+                script {
+                    def terraformAction = params.ACTION.toLowerCase()
+                    sh "cd ec2 && terraform ${terraformAction} -auto-approve"
+                }
+            }
+        }
     }
 }

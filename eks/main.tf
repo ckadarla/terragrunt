@@ -4,10 +4,9 @@ provider "aws" {
   region = "us-west-2"  # Change to your desired region
 }
 
-# Create VPC
-module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-  # You can customize VPC configuration here
+module "vpc_example_complete" {
+  source  = "terraform-aws-modules/vpc/aws//examples/complete"
+  version = "5.4.0"
 }
 
 # Create EKS cluster
@@ -40,11 +39,15 @@ module "prometheus" {
   alertmanager_config = file("${path.module}/alertmanager-config.yaml")
 }
 
-module "grafana" {
-  source                = "terraform-aws-modules/grafana/aws"
-  cluster_name          = module.eks.cluster_id
-  cluster_arn           = module.eks.cluster_arn
-  namespace             = "grafana"
-  additional_iam_policies = ["arn:aws:iam::aws:policy/CloudWatchFullAccess"]
+terraform {
+  required_providers {
+    grafana = {
+      source = "grafana/grafana"
+      version = "2.8.0"
+    }
+  }
 }
 
+provider "grafana" {
+  # Configuration options
+}

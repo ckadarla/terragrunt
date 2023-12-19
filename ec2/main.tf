@@ -6,6 +6,12 @@ module "vpc" {
   source = "./../vpc"  # Adjust the path based on your actual directory structure
 }
 
+
+module "vpc" {
+  source = "./../s3"  # Adjust the path based on your actual directory structure
+}
+
+
 resource "aws_instance" "my_instance" {
   ami           = "ami-09499f802f26db67e"  # Change to your desired AMI
   instance_type = "t2.micro"

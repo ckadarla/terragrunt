@@ -1,73 +1,60 @@
-def installTerraform() {
-    // Install Terragrunt
-    def terragruntExists = sh(script: 'command -v terragrunt', returnStatus: true)
-    if (terragruntExists != 0) {
-        // Install terragrunt
-        sh '''
-            echo "Installing Terragrunt..."
-            wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.35.0/terragrunt_linux_amd64
-            chmod +x terragrunt_linux_amd64
-            sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
-        '''
-    } else {
-        echo "Terragrunt already installed!"
-    }
-}
-
 pipeline {
     agent any
 
+    environment {
+        TF_HOME = tool 'Terraform'
+    }
+
     parameters {
-        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
+        choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Terraform Action')
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Pull the git repo
-                cleanWs()
-                checkout scm
+                git 'https://github.com/your-username/your-terraform-repo.git'
             }
         }
 
-        stage('Install Terraform and Terragrunt') {
+        stage('Terraform Init VPC') {
             steps {
                 script {
-                    installTerraform()
+                    sh "cd vpc && ${TF_HOME}/terraform init"
                 }
             }
         }
 
-        stage('Terragrunt Plan') {
+        stage('Terraform Apply/Destroy VPC') {
             steps {
                 script {
-                    // CD into deployment folder and run terragrunt commands
-                    dir("vpc/") {
-                        sh 'terragrunt init'
-                        sh 'terragrunt plan'
-                    }
+                    def terraformAction = params.ACTION.toLowerCase()
+                    sh "cd vpc && ${TF_HOME}/terraform ${terraformAction} -auto-approve"
                 }
             }
         }
 
-        stage('Approval') {
+        stage('Terraform Init EC2') {
             steps {
                 script {
-                    // Prompt for approval
-                    input message: "Do you want to ${params.ACTION} Terragrunt changes?", ok: "Yes, proceed with Terragrunt ${params.ACTION}"
+                    sh "cd ec2 && ${TF_HOME}/terraform init"
                 }
             }
         }
 
-        stage('Terragrunt Action') {
+        stage('Terraform Apply/Destroy EC2') {
             steps {
                 script {
-                    // CD into deployment folder and run terragrunt apply or destroy based on user input
-                    dir("vpc/") {
-                        sh "terragrunt ${params.ACTION}  -auto-approve"
-                    }
+                    def terraformAction = params.ACTION.toLowerCase()
+                    sh "cd ec2 && ${TF_HOME}/terraform ${terraformAction} -auto-approve"
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            // Clean up any temporary files or artifacts
+            deleteDir()
         }
     }
 }

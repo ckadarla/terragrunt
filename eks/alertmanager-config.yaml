@@ -1,0 +1,22 @@
+# alertmanager-config.yaml
+
+route:
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 3h
+
+receivers:
+  - name: "default-receiver"
+    slack_configs:
+      - channel: "#alerts"
+        send_resolved: true
+
+# Add Prometheus alerts (customize based on your application metrics)
+# Example alert rule for high CPU usage
+resource "prometheus_alert" "high_cpu_alert" {
+  provider         = module.prometheus.provider
+  rule             = file("${path.module}/prometheus-alerts/high-cpu-alert.yaml")
+  group_wait       = "10s"
+  group_interval   = "5m"
+  repeat_interval  = "3h"
+}

@@ -1,0 +1,14 @@
+
+# high-cpu-alert.yaml
+
+groups:
+- name: HighCPULoad
+  rules:
+  - alert: HighCPULoad
+    expr: sum(rate(container_cpu_usage_seconds_total{container!="POD",namespace="default"}[5m])) > 0.8
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU usage detected"
+      description: "Container {{ $labels.container }} in namespace {{ $labels.namespace }} is using high CPU."

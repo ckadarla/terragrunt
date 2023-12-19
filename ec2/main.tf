@@ -7,7 +7,7 @@ module "vpc" {
 }
 
 
-module "vpc" {
+module "s3" {
   source = "./../s3"  # Adjust the path based on your actual directory structure
 }
 

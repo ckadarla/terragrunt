@@ -48,39 +48,3 @@ module "grafana" {
   additional_iam_policies = ["arn:aws:iam::aws:policy/CloudWatchFullAccess"]
 }
 
-# alertmanager-config.yaml
-
-route:
-  group_wait: 10s
-  group_interval: 5m
-  repeat_interval: 3h
-
-receivers:
-  - name: "default-receiver"
-    slack_configs:
-      - channel: "#alerts"
-        send_resolved: true
-
-# Add Prometheus alerts (customize based on your application metrics)
-# Example alert rule for high CPU usage
-resource "prometheus_alert" "high_cpu_alert" {
-  provider         = module.prometheus.provider
-  rule             = file("${path.module}/prometheus-alerts/high-cpu-alert.yaml")
-  group_wait       = "10s"
-  group_interval   = "5m"
-  repeat_interval  = "3h"
-}
-
-# high-cpu-alert.yaml
-
-groups:
-- name: HighCPULoad
-  rules:
-  - alert: HighCPULoad
-    expr: sum(rate(container_cpu_usage_seconds_total{container!="POD",namespace="default"}[5m])) > 0.8
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: "High CPU usage detected"
-      description: "Container {{ $labels.container }} in namespace {{ $labels.namespace }} is using high CPU."

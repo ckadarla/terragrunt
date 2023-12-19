@@ -53,7 +53,7 @@ pipeline {
         stage('terraform Action') {
             steps {
                 script {
-                    // CD into deployment folder and run terraform apply or destroy based on user input
+                    
                     dir("eks/") {
                         sh "terraform ${params.ACTION}  -auto-approve"
                     }

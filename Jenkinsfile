@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/your-terraform-repo.git'
+                git 'https://github.com/ckadarla/terragrunt.git'
             }
         }
 

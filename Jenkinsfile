@@ -16,14 +16,35 @@ pipeline {
         }
 
        
-        stage('terraform Plan') {
+        // stage('terraform Plan') {
+        //     steps {
+        //         script {
+        //             // CD into deployment folder and run terraform commands
+        //             dir("vpc/") {
+        //                 sh 'terraform init'
+        //                 sh 'terraform plan'
+        //             }
+        //         }
+        //     }
+        // }
+
+        
+
+        // stage('terraform Action') {
+        //     steps {
+        //         script {
+        //             // CD into deployment folder and run terraform apply or destroy based on user input
+        //             dir("vpc/") {
+        //                 sh "terraform ${params.ACTION}  -auto-approve"
+        //             }
+        //         }
+        //     }
+        // }
+        stage('Terraform Init EC2') {
             steps {
                 script {
-                    // CD into deployment folder and run terraform commands
-                    dir("vpc/") {
-                        sh 'terraform init'
-                        sh 'terraform plan'
-                    }
+                    sh "cd ec2 && terraform init"
+                    sh "terraform plan"
                 }
             }
         }
@@ -33,24 +54,6 @@ pipeline {
                 script {
                     // Prompt for approval
                     input message: "Do you want to ${params.ACTION} terraform changes?", ok: "Yes, proceed with terraform ${params.ACTION}"
-                }
-            }
-        }
-
-        stage('terraform Action') {
-            steps {
-                script {
-                    // CD into deployment folder and run terraform apply or destroy based on user input
-                    dir("vpc/") {
-                        sh "terraform ${params.ACTION}  -auto-approve"
-                    }
-                }
-            }
-        }
-        stage('Terraform Init EC2') {
-            steps {
-                script {
-                    sh "cd ec2 && terraform init"
                 }
             }
         }

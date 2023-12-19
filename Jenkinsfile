@@ -44,7 +44,7 @@ pipeline {
                     // Requires manual approval before proceeding
                     echo "\u001B[33mApproval: Do you want to apply the Terraform changes?\u001B[0m"  // Yellow color
                     input 'Proceed with the Terraform apply?'
-                    echo "\u001B[32mTerraform Apply...\u001B[31m"  // Blue color
+                    echo "\u001B[33mTerraform Apply...\u001B[33m"  // Blue color
                     // sh 'terraform apply -auto-approve'
                 }
             }

@@ -16,17 +16,7 @@ pipeline {
         }
 
        
-        // stage('terraform Plan') {
-        //     steps {
-        //         script {
-        //             // CD into deployment folder and run terraform commands
-        //             dir("vpc/") {
-        //                 sh 'terraform init'
-        //                 sh 'terraform plan'
-        //             }
-        //         }
-        //     }
-        // }
+        
 
         
 
@@ -40,16 +30,19 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Terraform Init EC2') {
+        // 
+        
+        stage('terraform Plan') {
             steps {
                 script {
-                    dir("vpc/") {
-                       sh 'terraform init'
-                       sh 'terraform plan'
-        //             }
+                    // CD into deployment folder and run terraform commands
+                    dir("ec2/") {
+                        sh 'terraform init'
+                        sh 'terraform plan'
+                    }
                 }
             }
-        // }
+        }
 
         stage('Approval') {
             steps {
@@ -69,4 +62,4 @@ pipeline {
             }
         }
     }
-
+}

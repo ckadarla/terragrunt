@@ -7,7 +7,7 @@ module "vpc" {
 }
 
 resource "aws_instance" "my_instance" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Change to your desired AMI
+  ami           = "ami-09499f802f26db67e"  # Change to your desired AMI
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [module.vpc.my_sg.id]

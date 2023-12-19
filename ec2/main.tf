@@ -1,6 +1,6 @@
-provider "aws" {
-  region = "us-east-1"  # Change to your desired AWS region
-}
+# provider "aws" {
+#   region = "us-east-1"  # Change to your desired AWS region
+# }
 
 resource "aws_instance" "my_instance" {
   ami           = "ami-0c55b159cbfafe1f0"  # Change to your desired AMI

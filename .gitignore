@@ -1,1 +1,7 @@
 co.bat
+eks/dev/eks/.terraform.lock.hcl
+eks/dev/eks/.terragrunt-cache/
+eks/dev/vpc/.terraform.lock.hcl
+eks/dev/vpc/.terragrunt-cache/
+eks/dev/kubernetes-addons/.terraform.lock.hcl
+eks/dev/kubernetes-addons/.terragrunt-cache/

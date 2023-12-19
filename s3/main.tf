@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "my_bucket" {
   bucket = "terrastate-s3"
-  acl    = "public-read"
+#   acl    = "public-read"
 
   versioning {
     enabled = true

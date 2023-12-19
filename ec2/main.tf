@@ -1,6 +1,6 @@
-provider "aws" {
-  region = "us-east-1"  # Change to your desired AWS region
-}
+# provider "aws" {
+#   region = "us-east-1"  # Change to your desired AWS region
+# }
 
 module "vpc" {
   source = "./../vpc"  # Adjust the path based on your actual directory structure

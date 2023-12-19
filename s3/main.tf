@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "my_bucket" {
   acl    = "public-read"
 
   versioning {
-    enabled = false
+    enabled = true
   }
 
   tags = {

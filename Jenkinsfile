@@ -15,23 +15,7 @@ pipeline {
             }
         }
 
-       
-        
-
-        
-
-        // stage('terraform Action') {
-        //     steps {
-        //         script {
-        //             // CD into deployment folder and run terraform apply or destroy based on user input
-        //             dir("vpc/") {
-        //                 sh "terraform ${params.ACTION}  -auto-approve"
-        //             }
-        //         }
-        //     }
-        // }
-        // 
-        
+              
         stage('terraform Plan') {
             steps {
                 script {
@@ -53,13 +37,16 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply/Destroy EC2') {
+        stage('terraform Action') {
             steps {
                 script {
-                    def terraformAction = params.ACTION.toLowerCase()
-                    sh "cd ec2 && terraform ${terraformAction} -auto-approve"
+                    // CD into deployment folder and run terraform apply or destroy based on user input
+                    dir("ec2/") {
+                        sh "terraform ${params.ACTION}  -auto-approve"
+                    }
                 }
             }
         }
+        
     }
 }

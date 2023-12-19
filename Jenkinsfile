@@ -5,16 +5,7 @@ pipeline {
         choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Terraform Action')
     }
     
-    stages {
-        stage('Checkout Code') {
-            steps {
-                // Pull the git repo
-                cleanWs()
-                checkout scm
-            }
-        }
-        
-    stages {
+        stages {
         stage('Checkout') {
             steps {
                 git 'https://github.com/ckadarla/terragrunt.git'

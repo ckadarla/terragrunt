@@ -1,6 +1,5 @@
-output "vpc_id" {
-  value = module.vpc.my_vpc.id
-  
+output "my_vpc_id" {
+  value = aws_vpc.my_vpc.id
 }
 
 output "ec2_instance_id" {

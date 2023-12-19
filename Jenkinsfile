@@ -28,11 +28,24 @@ pipeline {
             }
         }
 
-        stage('Approval') {
+        // stage('Approval') {
+        //     steps {
+        //         script {
+        //             // Prompt for approval
+        //             input message: "Do you want to ${params.ACTION} terraform changes?", ok: "Yes, proceed with terraform ${params.ACTION}"
+        //         }
+        //     }
+        // }
+
+        stage('Terraform Apply') {
             steps {
                 script {
-                    // Prompt for approval
-                    input message: "Do you want to ${params.ACTION} terraform changes?", ok: "Yes, proceed with terraform ${params.ACTION}"
+                    // Run 'terraform apply' to create/update resources
+                    // Requires manual approval before proceeding
+                    echo "\u001B[33mApproval: Do you want to apply the Terraform changes?\u001B[0m"  // Yellow color
+                    input 'Proceed with the Terraform apply?'
+                    echo "\u001B[34mTerraform Apply...\u001B[0m"  // Blue color
+                    // sh 'terraform apply -auto-approve'
                 }
             }
         }

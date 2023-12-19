@@ -13,9 +13,9 @@ module "vpc_example_complete" {
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = "my-eks-cluster"
-  subnets         = module.vpc.private_subnets
+  subnets         = module.vpc.private_subnets_ids  # Use the correct attribute for subnets
   vpc_id          = module.vpc.vpc_id
-  cluster_version = "1.20"
+  cluster_version = "1.26"
   # You can customize EKS cluster configuration here
 }
 

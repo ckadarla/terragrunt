@@ -20,25 +20,42 @@ module "eks" {
 }
 
 # Deploy sample application to EKS
-module "sample_app" {
-  source    = "terraform-aws-modules/kubernetes/helm_release"
-  chart     = "stable/nginx-ingress"
-  namespace = "default"
-  name      = "nginx-ingress"
-  version   = "1.41.3"
-  # You can customize application deployment here
+resource "helm_release" "example" {
+  name       = "my-redis-release"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "redis"
+  version    = "6.0.1"
+
+  values = [
+    "${file("values.yaml")}"
+  ]
+
+  set {
+    name  = "cluster.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "metrics.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "service.annotations.prometheus\\.io/port"
+    value = "9127"
+    type  = "string"
+  }
 }
+
 
 # Add Prometheus and Grafana to EKS
-module "prometheus" {
-  source            = "terraform-aws-modules/prometheus/aws"
-  prometheus_name   = "my-prometheus"
-  cluster_name      = module.eks.cluster_id
-  cluster_arn       = module.eks.cluster_arn
-  enable_alertmanager = true
-  alertmanager_config = file("${path.module}/alertmanager-config.yaml")
-}
+resource "aws_prometheus_workspace" "example" {
+  alias = "example"
 
+  tags = {
+    Environment = "production"
+  }
+}
 terraform {
   required_providers {
     grafana = {

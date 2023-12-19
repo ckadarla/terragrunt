@@ -43,8 +43,10 @@ pipeline {
         stage('Terraform Init EC2') {
             steps {
                 script {
-                    sh "cd ec2 && terraform init"
-                    sh "terraform plan"
+                    dir("vpc/") {
+                       sh 'terraform init'
+                       sh 'terraform plan'
+        //             }
                 }
             }
         }

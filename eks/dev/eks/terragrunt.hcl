@@ -1,4 +1,10 @@
 terraform {
+  backend "local" {
+    path = "/var/jenkins_home/state/vpc/terraform.tfstate"
+  }
+}
+
+terraform {
   source = "../../../infrastructure-modules/eks"
 }
 
@@ -6,11 +12,11 @@ include "root" {
   path = find_in_parent_folders()
 }
 
-include "env" {
-  path           = find_in_parent_folders("env.hcl")
-  expose         = true
-  merge_strategy = "no_merge"
-}
+# include "env" {
+#   path           = find_in_parent_folders("env.hcl")
+#   expose         = true
+#   merge_strategy = "no_merge"
+# }
 
 inputs = {
   eks_version = "1.26"
@@ -21,11 +27,11 @@ inputs = {
   node_groups = {
     general = {
       capacity_type  = "ON_DEMAND"
-      instance_types = ["t2.micro"]
+      instance_types = ["m5.large"]
       scaling_config = {
         desired_size = 1
         max_size     = 2
-        min_size     = 0
+        min_size     = 1
       }
     }
   }

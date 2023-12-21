@@ -1,12 +1,11 @@
 remote_state {
-  backend = "local"
-  generate = {
-    path      = "backend.tf"
-    if_exists = "overwrite_terragrunt"
-  }
-
+  backend = "s3"
   config = {
-    path = "/var/jenkins_home/state/eks/terraform.tfstate"
+    bucket         = "your-dev-terraform-state-bucket"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
+    region         = "us-west-2"
+    encrypt        = true
+    dynamodb_table = "your-dev-lock-table"
   }
 }
 

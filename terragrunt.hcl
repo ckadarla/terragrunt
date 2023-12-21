@@ -1,14 +1,10 @@
 remote_state {
   backend = "s3"
   config = {
-    bucket         = "chandra-terragrunt-state"
+    bucket         = "your-dev-terraform-state-bucket"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = "us-west-2" # Change to your desired AWS region
+    region         = "us-west-2"
     encrypt        = true
-    dynamodb_table = "chandra-terragrunt-state-lock"
+    dynamodb_table = "your-dev-lock-table"
   }
-}
-
-include {
-  path = "live/${get_env()}"
 }

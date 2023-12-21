@@ -6,7 +6,7 @@
 #   }
 
 #   config = {
-#     path = "/var/jenkins_home/state/ec2/terraform.tfstate"
+#     path = "/var/jenkins_home/state/vpc/terraform.tfstate"
 #   }
 # }
 

@@ -1,9 +1,9 @@
-
 pipeline {
     agent any
 
     parameters {
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging'], description: 'Select environment: dev or staging')
     }
 
     stages {
@@ -15,51 +15,15 @@ pipeline {
             }
         }
 
-              
-        stage('terraform Plan') {
+        stage('Terragrunt Action') {
             steps {
                 script {
-                    // CD into deployment folder and run terraform commands
-                    dir("eks/") {
-                        sh 'terraform init'
-                        sh 'terraform plan'
+                    dir("$eks/{params.ENVIRONMENT}/") {
+                        // Assuming you have a terragrunt.hcl file in your environment folder
+                        sh "terragrunt runn-all ${params.ACTION} --terragrunt-exclude-dir kubernetes-addons"
                     }
                 }
             }
         }
-
-        // stage('Approval') {
-        //     steps {
-        //         script {
-        //             // Prompt for approval
-        //             input message: "Do you want to ${params.ACTION} terraform changes?", ok: "Yes, proceed with terraform ${params.ACTION}"
-        //         }
-        //     }
-        // }
-
-        stage('Terraform Apply') {
-            steps {
-                script {
-                    // Run 'terraform apply' to create/update resources
-                    // Requires manual approval before proceeding
-                    echo "\u001B[33mApproval: Do you want to apply the Terraform changes?\u001B[0m"  // Yellow color
-                    input 'Proceed with the Terraform apply?'
-                    echo "\u001B[33mTerraform Apply...\u001B[33m"  // Blue color
-                    // sh 'terraform apply -auto-approve'
-                }
-            }
-        }
-
-        stage('terraform Action') {
-            steps {
-                script {
-                    
-                    dir("eks/") {
-                        sh "terraform ${params.ACTION}  -auto-approve"
-                    }
-                }
-            }
-        }
-        
     }
 }

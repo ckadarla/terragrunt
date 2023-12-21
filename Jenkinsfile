@@ -29,20 +29,20 @@ pipeline {
             }
         }
 
-        stage('Manual Approval') {
-            steps {
-                script {
-                    // Request manual input for approval
-                    input "Do you want to proceed with ${params.ACTION} in ${params.ENVIRONMENT} environment?"
-                }
-            }
-        }
+        // stage('Manual Approval') {
+        //     steps {
+        //         script {
+        //             // Request manual input for approval
+        //             input "Do you want to proceed with ${params.ACTION} in ${params.ENVIRONMENT} environment?"
+        //         }
+        //     }
+        // }
 
         stage('Terragrunt Action') {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        sh "terragrunt ${params.ACTION} -auto-approve"
+                        sh "terragrunt ${params.ACTION} --auto-approve"
                     }
                 }
             }

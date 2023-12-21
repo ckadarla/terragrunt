@@ -1,40 +1,54 @@
-terraform {
-  source = "../../../infrastructure-modules/eks"
-}
+pipeline {
+    agent any
 
-include "root" {
-  path = find_in_parent_folders()
-}
-
-include "env" {
-  path           = find_in_parent_folders("env.hcl")
-  expose         = true
-  merge_strategy = "no_merge"
-}
-
-inputs = {
-  eks_version = "1.26"
-  env         = include.env.locals.env
-  eks_name    = "demo"
-  subnet_ids  = dependency.vpc.outputs.private_subnet_ids
-
-  node_groups = {
-    general = {
-      capacity_type  = "ON_DEMAND"
-      instance_types = ["m4x.large"]
-      scaling_config = {
-        desired_size = 1
-        max_size     = 2
-        min_size     = 0
-      }
+    parameters {
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging'], description: 'Select environment: dev or staging')
+        choice(name: 'component', choices: ['vpc', 'eks'], description: 'Select component: VPC or EKS')
     }
-  }
-}
 
-dependency "vpc" {
-  config_path = "../vpc"
+    stages {
+        
+        stage('Terragrunt Init ') {
+            steps {
+                script {
+                    dir("eks/${params.ENVIRONMENT}/${params.component}") {
+                        // Assuming you have a terragrunt.hcl file in your environment folder
+                        sh "terragrunt  init "
+                    }
+                }
+            }
+        }
 
-  mock_outputs = {
-    private_subnet_ids = ["subnet-1234", "subnet-5678"]
-  }
+        stage('Terragrunt plan') {
+            steps {
+                script {
+                    dir("eks/${params.ENVIRONMENT}/${params.component}") {
+                        // Assuming you have a terragrunt.hcl file in your environment folder
+                        sh "terragrunt  plan"
+                    }
+                }
+            }
+        }
+
+        
+        
+        stage('Terragrunt Action') {
+            steps {
+                script {
+                    dir("eks/${params.ENVIRONMENT}/${params.component}") {
+                        // Assuming you have a terragrunt.hcl file in your environment folder
+                        sh "terragrunt  ${params.ACTION} --auto-approve"
+                    }
+                }
+            }
+        }
+        stage('Clean Code') {
+            steps {
+                // Pull the git repo
+                cleanWs()
+                // checkout scm
+            }
+        }
+    }
 }

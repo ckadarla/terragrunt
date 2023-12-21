@@ -19,7 +19,7 @@ pipeline {
         stage('Terragrunt Init') {
             steps {
                 script {
-                    dir("$eks/{params.ENVIRONMENT}/{params.component}") {
+                    dir("eks/{params.ENVIRONMENT}/{params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
                         sh "terragrunt  init "
                     }
@@ -30,7 +30,7 @@ pipeline {
         stage('Terragrunt Action') {
             steps {
                 script {
-                    dir("$eks/{params.ENVIRONMENT}/{params.component}") {
+                    dir("eks/{params.ENVIRONMENT}/{params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
                         sh "terragrunt  ${params.ACTION} "
                     }

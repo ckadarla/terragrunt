@@ -1,9 +1,9 @@
-remote_state {
-  backend = "local"
-  generate = {
-    path      = "backend.tf"
-    if_exists = "overwrite_terragrunt"
-  }
+# remote_state {
+#   backend = "local"
+#   generate = {
+#     path      = "backend.tf"
+#     if_exists = "overwrite_terragrunt"
+#   }
 
   config = {
     path = "/var/jenkins_home/state/ec2/terraform.tfstate"

@@ -4,10 +4,6 @@ terraform {
   }
 }
 
-output "subnet_ids" {
-  value = data.terraform_remote_state.vpc.outputs.private_subnet_ids
-}
-
 terraform {
   source = "../../../infrastructure-modules/eks"
 }

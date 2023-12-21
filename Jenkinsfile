@@ -27,14 +27,7 @@ pipeline {
             }
         }
 
-        // stage('Approval') {
-        //     steps {
-        //         script {
-        //             // Prompt for approval
-        //             input message: "Do you want to ${params.ACTION} Terragrunt changes?", ok: "Yes, proceed with Terragrunt ${params.ACTION}"
-        //         }
-        //     }
-        // }
+        
         
         stage('Terragrunt Action') {
             steps {
@@ -44,6 +37,13 @@ pipeline {
                         sh "terragrunt  ${params.ACTION} --auto-approve"
                     }
                 }
+            }
+        }
+        stage('Checkout Code') {
+            steps {
+                // Pull the git repo
+                cleanWs()
+                // checkout scm
             }
         }
     }

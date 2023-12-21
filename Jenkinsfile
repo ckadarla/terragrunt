@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        sh "terragrunt init -migrate-state"
+                        sh "terragrunt init "
                     }
                 }
             }

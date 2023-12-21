@@ -13,41 +13,44 @@ pipeline {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt  init "
+                        sh "terragrunt init -migrate-state"
                     }
                 }
             }
         }
 
-        stage('Terragrunt plan') {
+        stage('Terragrunt Plan') {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt  plan"
+                        sh "terragrunt plan"
                     }
                 }
             }
         }
 
-        
-        
+        // stage('Manual Approval') {
+        //     steps {
+        //         script {
+        //             // Request manual input for approval
+        //             input "Do you want to proceed with ${params.ACTION} in ${params.ENVIRONMENT} environment?"
+        //         }
+        //     }
+        // }
+
         stage('Terragrunt Action') {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt  ${params.ACTION} --auto-approve"
+                        sh "terragrunt ${params.ACTION} --auto-approve"
                     }
                 }
             }
         }
+
         stage('Clean Code') {
             steps {
-                // Pull the git repo
                 cleanWs()
-                // checkout scm
             }
         }
     }

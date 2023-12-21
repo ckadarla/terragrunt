@@ -1,4 +1,14 @@
 terraform {
+  backend "local" {
+    path = "/var/jenkins_home/state/vpc/terraform.tfstate"
+  }
+}
+
+output "subnet_ids" {
+  value = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+}
+
+terraform {
   source = "../../../infrastructure-modules/eks"
 }
 
@@ -31,10 +41,10 @@ inputs = {
   }
 }
 
-dependency "vpc" {
-  config_path = "../vpc"
+# dependency "vpc" {
+#   config_path = "../vpc"
 
-  mock_outputs = {
-    private_subnet_ids = ["subnet-1234", "subnet-5678"]
-  }
-}
+#   mock_outputs = {
+#     private_subnet_ids = ["subnet-1234", "subnet-5678"]
+#   }
+# }

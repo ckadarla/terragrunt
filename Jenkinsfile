@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        // choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
         choice(name: 'ENVIRONMENT', choices: ['dev', 'staging'], description: 'Select environment: dev or staging')
         choice(name: 'component', choices: ['vpc', 'eks'], description: 'Select component: VPC or EKS')
     }
@@ -27,15 +27,15 @@ pipeline {
             }
         }
 
-        stage('Approval') {
-            steps {
-                script {
-                    // Prompt for approval
-                    input message: "Do you want to ${params.ACTION} Terragrunt changes?", ok: "Yes, proceed with Terragrunt ${params.ACTION}"
-                }
-            }
-        }
-
+        // stage('Approval') {
+        //     steps {
+        //         script {
+        //             // Prompt for approval
+        //             input message: "Do you want to ${params.ACTION} Terragrunt changes?", ok: "Yes, proceed with Terragrunt ${params.ACTION}"
+        //         }
+        //     }
+        // }
+        
         stage('Terragrunt Action') {
             steps {
                 script {

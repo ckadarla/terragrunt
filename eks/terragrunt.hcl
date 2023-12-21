@@ -6,7 +6,7 @@ remote_state {
   }
 
   config = {
-    path = "${path_relative_to_include()}/terraform.tfstate"
+    path = "/var/jenkins_home/state/eks/terraform.tfstate"
   }
 }
 

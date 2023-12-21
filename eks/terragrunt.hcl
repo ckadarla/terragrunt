@@ -1,14 +1,14 @@
-# remote_state {
-#   backend = "local"
-#   generate = {
-#     path      = "backend.tf"
-#     if_exists = "overwrite_terragrunt"
-#   }
+remote_state {
+  backend = "local"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite_terragrunt"
+  }
 
-#   config = {
-#     path = "/var/jenkins_home/state/vpc/terraform.tfstate"
-#   }
-# }
+  config = {
+    path = "${path_relative_to_include()}/terraform.tfstate"
+  }
+}
 
 generate "provider" {
   path = "provider.tf"

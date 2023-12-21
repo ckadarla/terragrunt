@@ -21,11 +21,11 @@ inputs = {
   node_groups = {
     general = {
       capacity_type  = "ON_DEMAND"
-      instance_types = ["m5.large"]
+      instance_types = ["t2.micro"]
       scaling_config = {
         desired_size = 1
-        max_size     = 2
-        min_size     = 1
+        max_size     = 10
+        min_size     = 0
       }
     }
   }

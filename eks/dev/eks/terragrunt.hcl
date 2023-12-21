@@ -1,6 +1,7 @@
 terraform {
   backend "local" {
     path = "/var/jenkins_home/state/vpc/terraform.tfstate"
+
   }
 }
 
@@ -37,10 +38,10 @@ inputs = {
   }
 }
 
-# dependency "vpc" {
-#   config_path = "../vpc"
+dependency "vpc" {
+  config_path = "../vpc"
 
-#   mock_outputs = {
-#     private_subnet_ids = ["subnet-1234", "subnet-5678"]
-#   }
-# }
+  mock_outputs = {
+    private_subnet_ids = ["subnet-1234", "subnet-5678"]
+  }
+}

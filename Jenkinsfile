@@ -7,14 +7,14 @@ pipeline {
         choice(name: 'component', choices: ['vpc', 'eks'], description: 'Select component: VPC or EKS')
     }
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                // Pull the git repo
-                cleanWs()
-                checkout scm
-            }
-        }
+    // stages {
+    //     stage('Checkout Code') {
+    //         steps {
+    //             // Pull the git repo
+    //             cleanWs()
+    //             checkout scm
+    //         }
+    //     }
 
         stage('Terragrunt Init') {
             steps {

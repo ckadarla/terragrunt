@@ -16,12 +16,12 @@ pipeline {
         //     }
         // }
 
-        stage('Terragrunt Init') {
+        stage('Terragrunt Init & plan') {
             steps {
                 script {
-                    dir("eks/{params.ENVIRONMENT}/{params.component}") {
+                    dir("eks/${params.ENVIRONMENT}/${params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt  init "
+                        sh "terragrunt  init && terragrunt plan"
                     }
                 }
             }
@@ -30,9 +30,9 @@ pipeline {
         stage('Terragrunt Action') {
             steps {
                 script {
-                    dir("eks/{params.ENVIRONMENT}/{params.component}") {
+                    dir("eks/${params.ENVIRONMENT}/${params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt  ${params.ACTION} "
+                        sh "terragrunt  ${params.ACTION} --auto-approve"
                     }
                 }
             }

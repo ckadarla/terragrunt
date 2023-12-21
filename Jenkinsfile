@@ -43,6 +43,12 @@ pipeline {
                 }
             }
         }
-        
+        stage('Clean Code') {
+            steps {
+                // Pull the git repo
+                cleanWs()
+                // checkout scm
+            }
+        }
     }
 }

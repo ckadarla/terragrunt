@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     dir("eks/${params.ENVIRONMENT}/${params.component}") {
-                        sh "terragrunt ${params.ACTION}"
+                        sh "terragrunt ${params.ACTION} -auto-approve"
                     }
                 }
             }

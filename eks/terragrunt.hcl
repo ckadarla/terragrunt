@@ -5,10 +5,10 @@
 #     if_exists = "overwrite_terragrunt"
 #   }
 
-  config = {
-    path = "/var/jenkins_home/state/ec2/terraform.tfstate"
-  }
-}
+#   config = {
+#     path = "/var/jenkins_home/state/ec2/terraform.tfstate"
+#   }
+# }
 
 generate "provider" {
   path = "provider.tf"

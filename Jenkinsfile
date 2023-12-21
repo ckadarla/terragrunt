@@ -8,14 +8,7 @@ pipeline {
     }
 
     stages {
-        // stage('Checkout Code') {
-        //     steps {
-        //         // Pull the git repo
-        //         cleanWs()
-        //         checkout scm
-        //     }
-        // }
-
+        
         stage('Terragrunt Init & plan') {
             steps {
                 script {
@@ -39,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('Checkout Code') {
+        stage('Clean Code') {
             steps {
                 // Pull the git repo
                 cleanWs()

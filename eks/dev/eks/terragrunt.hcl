@@ -2,11 +2,9 @@ terraform {
   backend "local" {
     path = "/var/jenkins_home/state/vpc/terraform.tfstate"
   }
-}
-
-terraform {
   source = "../../../infrastructure-modules/eks"
 }
+
 
 include "root" {
   path = find_in_parent_folders()

@@ -4,6 +4,7 @@ pipeline {
     parameters {
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Terraform action: apply or destroy')
         choice(name: 'ENVIRONMENT', choices: ['dev', 'staging'], description: 'Select environment: dev or staging')
+        choice(name: 'component', choices: ['vpc', 'eks'], description: 'Select component: VPC or EKS')
     }
 
     stages {
@@ -15,12 +16,12 @@ pipeline {
             }
         }
 
-        stage('Terragrunt Action') {
+        stage('Terragrunt Init') {
             steps {
                 script {
-                    dir("$eks/{params.ENVIRONMENT}/vpc") {
+                    dir("$eks/{params.ENVIRONMENT}/{params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt runn-all init --terragrunt-exclude-dir kubernetes-addons"
+                        sh "terragrunt  init "
                     }
                 }
             }
@@ -29,9 +30,9 @@ pipeline {
         stage('Terragrunt Action') {
             steps {
                 script {
-                    dir("$eks/{params.ENVIRONMENT}/vpc") {
+                    dir("$eks/{params.ENVIRONMENT}/{params.component}") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
-                        sh "terragrunt runn-all ${params.ACTION} --terragrunt-exclude-dir kubernetes-addons"
+                        sh "terragrunt  ${params.ACTION} "
                     }
                 }
             }

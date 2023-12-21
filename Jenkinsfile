@@ -20,6 +20,17 @@ pipeline {
                 script {
                     dir("$eks/{params.ENVIRONMENT}/vpc") {
                         // Assuming you have a terragrunt.hcl file in your environment folder
+                        sh "terragrunt runn-all init --terragrunt-exclude-dir kubernetes-addons"
+                    }
+                }
+            }
+        }
+
+        stage('Terragrunt Action') {
+            steps {
+                script {
+                    dir("$eks/{params.ENVIRONMENT}/vpc") {
+                        // Assuming you have a terragrunt.hcl file in your environment folder
                         sh "terragrunt runn-all ${params.ACTION} --terragrunt-exclude-dir kubernetes-addons"
                     }
                 }
